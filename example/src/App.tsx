@@ -35,7 +35,7 @@ export default function App() {
   React.useEffect(() => {
     (async () => {
       const status = await Camera.requestCameraPermission();
-      setHasPermission(status === 'authorized');
+      setHasPermission(status === 'granted');
     })();
   }, []);
 
@@ -81,7 +81,7 @@ export default function App() {
         frameProcessor={frameProcessor}
         device={device}
         isActive={true}
-        frameProcessorFps={5}
+        fps={5}
         onLayout={(event: LayoutChangeEvent) => {
           setPixelRatio(
             event.nativeEvent.layout.width /
