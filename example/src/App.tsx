@@ -10,8 +10,8 @@ import {
   PixelRatio,
   TouchableOpacity,
   Alert,
-  Clipboard,
 } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { OCRFrame, scanOCR } from 'vision-camera-ocr';
 import {
   useCameraDevices,
