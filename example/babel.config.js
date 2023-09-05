@@ -13,11 +13,6 @@ module.exports = {
         },
       },
     ],
-    [
-      'react-native-reanimated/plugin',
-      {
-        globals: ['__scanOCR'],
-      },
-    ],
+    'react-native-worklets-core/plugin',
   ],
 };

@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 
-import { runOnJS } from 'react-native-reanimated';
+import { Worklets } from 'react-native-worklets-core';
 import {
   StyleSheet,
   View,
@@ -26,10 +26,12 @@ export default function App() {
   const devices = useCameraDevices();
   const device = devices.back;
 
+  const onOcrScanned = Worklets.createRunInJsFn(setOcr);
+
   const frameProcessor = useFrameProcessor((frame) => {
     'worklet';
     const data = scanOCR(frame);
-    runOnJS(setOcr)(data);
+    onOcrScanned(data);
   }, []);
 
   React.useEffect(() => {
