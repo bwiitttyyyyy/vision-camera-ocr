@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-import type { Frame } from 'react-native-vision-camera';
+import { VisionCameraProxy, Frame } from 'react-native-vision-camera';
 
 type BoundingFrame = {
   x: number;
@@ -42,12 +41,13 @@ export type OCRFrame = {
   result: Text;
 };
 
+const plugin = VisionCameraProxy.getFrameProcessorPlugin('scanOCR');
+
 /**
  * Scans OCR.
  */
 
 export function scanOCR(frame: Frame): OCRFrame {
   'worklet';
-  // @ts-ignore
-  return __scanOCR(frame);
+  return plugin?.call(frame) as unknown as OCRFrame;
 }

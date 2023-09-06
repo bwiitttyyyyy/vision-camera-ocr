@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.Point
 import android.graphics.Rect
 import android.media.Image
-import androidx.camera.core.ImageProxy
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import com.google.android.gms.tasks.Task
@@ -13,9 +12,10 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import com.mrousavy.camera.frameprocessor.Frame
 import com.mrousavy.camera.frameprocessor.FrameProcessorPlugin
 
-class OCRFrameProcessorPlugin: FrameProcessorPlugin("scanOCR") {
+class OCRFrameProcessorPlugin: FrameProcessorPlugin() {
 
     private fun getBlockArray(blocks: MutableList<Text.TextBlock>): WritableNativeArray {
         val blockArray = WritableNativeArray()
@@ -96,7 +96,7 @@ class OCRFrameProcessorPlugin: FrameProcessorPlugin("scanOCR") {
         return frame
     }
 
-    override fun callback(frame: ImageProxy, params: Array<Any>): Any? {
+    override fun callback(frame: Frame, arguments: Map<String, Any>?): Any? {
 
         val result = WritableNativeMap()
 
@@ -106,7 +106,15 @@ class OCRFrameProcessorPlugin: FrameProcessorPlugin("scanOCR") {
         val mediaImage: Image? = frame.getImage()
 
         if (mediaImage != null) {
-            val image = InputImage.fromMediaImage(mediaImage, frame.imageInfo.rotationDegrees)
+            val orientation = frame.getOrientation()
+            val rotationDegrees = when (orientation) {
+                "portrait" -> 0
+                "landscape-right" -> 90
+                "portrait-upside-down" -> 180
+                "landscape-left" -> 270
+                else -> 0
+            }
+            val image = InputImage.fromMediaImage(mediaImage, rotationDegrees)
             val task: Task<Text> = recognizer.process(image)
             try {
                 val text: Text = Tasks.await<Text>(task)
