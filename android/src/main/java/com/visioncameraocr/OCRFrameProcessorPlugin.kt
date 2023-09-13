@@ -96,34 +96,8 @@ class OCRFrameProcessorPlugin: FrameProcessorPlugin() {
         return frame
     }
 
-    private fun toInputImage(image: Image, rotation: Int): InputImage {
-        val planes = image.planes
-        val yBuffer = planes[0].buffer
-        val uvBuffer = planes[2].buffer
-
-        val ySize = yBuffer.remaining()
-        val uvSize = uvBuffer.remaining()
-
-        val yuvData = ByteArray(ySize + uvSize)
-
-        yBuffer.get(yuvData, 0, ySize)
-        uvBuffer.get(yuvData, ySize, uvSize)
-
-        val width = image.width
-        val height = image.height
-
-        val inputImage = InputImage.fromByteArray(
-            yuvData,
-            width,
-            height,
-            rotation,
-            InputImage.IMAGE_FORMAT_NV21
-        )
-
-        return inputImage;
-    }
-
     override fun callback(frame: Frame, arguments: Map<String, Any>?): Any? {
+
         val result = WritableNativeMap()
 
         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
@@ -133,14 +107,14 @@ class OCRFrameProcessorPlugin: FrameProcessorPlugin() {
 
         if (mediaImage != null) {
             val orientation = frame.getOrientation()
-            val rotation = when (orientation) {
+            val rotationDegrees = when (orientation) {
                 "portrait" -> 0
                 "landscape-right" -> 90
                 "portrait-upside-down" -> 180
                 "landscape-left" -> 270
                 else -> 0
             }
-            val image = toInputImage(mediaImage, rotation)
+            val image = InputImage.fromMediaImage(mediaImage, rotationDegrees)
             val task: Task<Text> = recognizer.process(image)
             try {
                 val text: Text = Tasks.await<Text>(task)
