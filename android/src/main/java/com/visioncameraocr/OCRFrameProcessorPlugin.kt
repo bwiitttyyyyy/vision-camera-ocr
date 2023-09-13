@@ -14,6 +14,7 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.mrousavy.camera.frameprocessor.Frame
 import com.mrousavy.camera.frameprocessor.FrameProcessorPlugin
+import com.mrousavy.camera.parsers.Orientation
 
 class OCRFrameProcessorPlugin: FrameProcessorPlugin() {
 
@@ -106,14 +107,7 @@ class OCRFrameProcessorPlugin: FrameProcessorPlugin() {
         val mediaImage: Image? = frame.getImage()
 
         if (mediaImage != null) {
-            val orientation = frame.getOrientation()
-            val rotationDegrees = when (orientation) {
-                "portrait" -> 0
-                "landscape-right" -> 90
-                "portrait-upside-down" -> 180
-                "landscape-left" -> 270
-                else -> 0
-            }
+            val rotationDegrees = Orientation.valueOf(frame.getOrientation()).toDegrees()
             val image = InputImage.fromMediaImage(mediaImage, rotationDegrees)
             val task: Task<Text> = recognizer.process(image)
             try {
