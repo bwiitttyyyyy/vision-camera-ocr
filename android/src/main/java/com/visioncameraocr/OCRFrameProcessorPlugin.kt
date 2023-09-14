@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.Point
 import android.graphics.Rect
 import android.media.Image
-import com.facebook.react.bridge.WritableNativeArray
-import com.facebook.react.bridge.WritableNativeMap
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.mlkit.vision.common.InputImage
@@ -14,119 +12,88 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.mrousavy.camera.frameprocessor.Frame
 import com.mrousavy.camera.frameprocessor.FrameProcessorPlugin
+import com.mrousavy.camera.parsers.Orientation
 
 class OCRFrameProcessorPlugin: FrameProcessorPlugin() {
 
-    private fun getBlockArray(blocks: MutableList<Text.TextBlock>): WritableNativeArray {
-        val blockArray = WritableNativeArray()
-
-        for (block in blocks) {
-            val blockMap = WritableNativeMap()
-
-            blockMap.putString("text", block.text)
-            blockMap.putArray("recognizedLanguages", getRecognizedLanguages(block.recognizedLanguage))
-            blockMap.putArray("cornerPoints", block.cornerPoints?.let { getCornerPoints(it) })
-            blockMap.putMap("frame", getFrame(block.boundingBox))
-            blockMap.putArray("lines", getLineArray(block.lines))
-
-            blockArray.pushMap(blockMap)
+    private fun getBlockArray(blocks: List<Text.TextBlock>): List<Map<String, Any?>> {
+        return blocks.map { block ->
+            mapOf(
+                "text" to block.text,
+                "recognizedLanguages" to getRecognizedLanguages(block.recognizedLanguage),
+                "cornerPoints" to getCornerPoints(block.cornerPoints ?: emptyArray()),
+                "frame" to getFrame(block.boundingBox),
+                "lines" to getLineList(block.lines)
+            )
         }
-        return blockArray
     }
 
-    private fun getLineArray(lines: MutableList<Text.Line>): WritableNativeArray {
-        val lineArray = WritableNativeArray()
-
-        for (line in lines) {
-            val lineMap = WritableNativeMap()
-
-            lineMap.putString("text", line.text)
-            lineMap.putArray("recognizedLanguages", getRecognizedLanguages(line.recognizedLanguage))
-            lineMap.putArray("cornerPoints", line.cornerPoints?.let { getCornerPoints(it) })
-            lineMap.putMap("frame", getFrame(line.boundingBox))
-            lineMap.putArray("elements", getElementArray(line.elements))
-
-            lineArray.pushMap(lineMap)
+    private fun getLineList(lines: List<Text.Line>): List<Map<String, Any?>> {
+        return lines.map { line ->
+            mapOf(
+                "text" to line.text,
+                "recognizedLanguages" to getRecognizedLanguages(line.recognizedLanguage),
+                "cornerPoints" to getCornerPoints(line.cornerPoints ?: emptyArray()),
+                "frame" to getFrame(line.boundingBox),
+                "elements" to getElementList(line.elements)
+            )
         }
-        return lineArray
     }
 
-    private fun getElementArray(elements: MutableList<Text.Element>): WritableNativeArray {
-        val elementArray = WritableNativeArray()
-
-        for (element in elements) {
-            val elementMap = WritableNativeMap()
-
-            elementMap.putString("text", element.text)
-            elementMap.putArray("cornerPoints", element.cornerPoints?.let { getCornerPoints(it) })
-            elementMap.putMap("frame", getFrame(element.boundingBox))
+    private fun getElementList(elements: List<Text.Element>): List<Map<String, Any?>> {
+        return elements.map { element ->
+            mapOf(
+                "text" to element.text,
+                "cornerPoints" to getCornerPoints(element.cornerPoints ?: emptyArray()),
+                "frame" to getFrame(element.boundingBox)
+            )
         }
-        return elementArray
     }
 
-    private fun getRecognizedLanguages(recognizedLanguage: String): WritableNativeArray {
-        val recognizedLanguages = WritableNativeArray()
-        recognizedLanguages.pushString(recognizedLanguage)
-        return recognizedLanguages
+    private fun getRecognizedLanguages(recognizedLanguage: String): List<String> {
+        return listOf(recognizedLanguage)
     }
 
-    private fun getCornerPoints(points: Array<Point>): WritableNativeArray {
-        val cornerPoints = WritableNativeArray()
-
-        for (point in points) {
-            val pointMap = WritableNativeMap()
-            pointMap.putInt("x", point.x)
-            pointMap.putInt("y", point.y)
-            cornerPoints.pushMap(pointMap)
+    private fun getCornerPoints(points: Array<Point>): List<Map<String, Int>> {
+        return points.map { point ->
+            mapOf(
+                "x" to point.x,
+                "y" to point.y
+            )
         }
-        return cornerPoints
     }
 
-    private fun getFrame(boundingBox: Rect?): WritableNativeMap {
-        val frame = WritableNativeMap()
-
-        if (boundingBox != null) {
-            frame.putDouble("x", boundingBox.exactCenterX().toDouble())
-            frame.putDouble("y", boundingBox.exactCenterY().toDouble())
-            frame.putInt("width", boundingBox.width())
-            frame.putInt("height", boundingBox.height())
-            frame.putInt("boundingCenterX", boundingBox.centerX())
-            frame.putInt("boundingCenterY", boundingBox.centerY())
-        }
-        return frame
+    private fun getFrame(boundingBox: Rect?): Map<String, Any?> {
+        return boundingBox?.let {
+            mapOf(
+                "x" to it.exactCenterX().toDouble(),
+                "y" to it.exactCenterY().toDouble(),
+                "width" to it.width(),
+                "height" to it.height(),
+                "boundingCenterX" to it.centerX(),
+                "boundingCenterY" to it.centerY()
+            )
+        } ?: emptyMap()
     }
 
     override fun callback(frame: Frame, arguments: Map<String, Any>?): Any? {
-
-        val result = WritableNativeMap()
-
         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
         @SuppressLint("UnsafeOptInUsageError")
-        val mediaImage: Image? = frame.getImage()
+        val mediaImage: Image = frame.getImage() ?: return null
 
-        if (mediaImage != null) {
-            val orientation = frame.getOrientation()
-            val rotationDegrees = when (orientation) {
-                "portrait" -> 0
-                "landscape-right" -> 90
-                "portrait-upside-down" -> 180
-                "landscape-left" -> 270
-                else -> 0
-            }
-            val image = InputImage.fromMediaImage(mediaImage, rotationDegrees)
-            val task: Task<Text> = recognizer.process(image)
-            try {
-                val text: Text = Tasks.await<Text>(task)
-                result.putString("text", text.text)
-                result.putArray("blocks", getBlockArray(text.textBlocks))
-            } catch (e: Exception) {
-                return null
-            }
+        val rotationDegrees = Orientation.valueOf(frame.getOrientation()).toDegrees()
+        val image = InputImage.fromMediaImage(mediaImage, rotationDegrees)
+        val task: Task<Text> = recognizer.process(image)
+        try {
+            val text: Text = Tasks.await<Text>(task)
+            val result = mapOf(
+                "text" to text.text,
+                "blocks" to getBlockArray(text.textBlocks)
+            )
+            return mapOf("result" to result)
+        } catch (e: Exception) {
+            return null
         }
-
-        val data = WritableNativeMap()
-        data.putMap("result", result)
-        return data
     }
 }
