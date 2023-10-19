@@ -14,7 +14,7 @@ import com.mrousavy.camera.frameprocessor.Frame
 import com.mrousavy.camera.frameprocessor.FrameProcessorPlugin
 import com.mrousavy.camera.types.Orientation
 
-class OCRFrameProcessorPlugin: FrameProcessorPlugin() {
+class OCRFrameProcessorPlugin(options: Map<String, Any>?): FrameProcessorPlugin(options) {
 
     private fun getBlockArray(blocks: List<Text.TextBlock>): List<Map<String, Any?>> {
         return blocks.map { block ->
