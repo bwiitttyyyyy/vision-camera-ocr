@@ -14,7 +14,7 @@ import {
 import Clipboard from '@react-native-clipboard/clipboard';
 import { OCRFrame, scanOCR } from 'vision-camera-ocr';
 import {
-  useCameraDevices,
+  useCameraDevice,
   useFrameProcessor,
   Camera,
 } from 'react-native-vision-camera';
@@ -23,8 +23,7 @@ export default function App() {
   const [hasPermission, setHasPermission] = React.useState(false);
   const [ocr, setOcr] = React.useState<OCRFrame>();
   const [pixelRatio, setPixelRatio] = React.useState<number>(1);
-  const devices = useCameraDevices();
-  const device = devices.back;
+  const device = useCameraDevice('back');
 
   const onOcrScanned = Worklets.createRunInJsFn(setOcr);
 
