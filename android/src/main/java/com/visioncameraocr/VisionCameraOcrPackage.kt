@@ -7,10 +7,13 @@ import com.facebook.react.uimanager.ViewManager
 import com.mrousavy.camera.frameprocessor.FrameProcessorPluginRegistry
 
 class VisionCameraOcrPackage : ReactPackage {
-    override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
+    init {
         FrameProcessorPluginRegistry.addFrameProcessorPlugin("scanOCR") { options ->
-          OCRFrameProcessorPlugin()
+            OCRFrameProcessorPlugin()
         }
+    }
+
+    override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
         return emptyList()
     }
 
