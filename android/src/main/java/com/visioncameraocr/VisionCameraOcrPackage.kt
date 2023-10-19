@@ -10,7 +10,7 @@ class VisionCameraOcrPackage : ReactPackage {
     companion object {
         init {
             FrameProcessorPluginRegistry.addFrameProcessorPlugin("scanOCR") { options ->
-                OCRFrameProcessorPlugin()
+                OCRFrameProcessorPlugin(options)
             }
         }
     }
