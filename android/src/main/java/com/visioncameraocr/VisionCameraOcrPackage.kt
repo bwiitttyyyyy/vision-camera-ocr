@@ -7,9 +7,11 @@ import com.facebook.react.uimanager.ViewManager
 import com.mrousavy.camera.frameprocessor.FrameProcessorPluginRegistry
 
 class VisionCameraOcrPackage : ReactPackage {
-    init {
-        FrameProcessorPluginRegistry.addFrameProcessorPlugin("scanOCR") { options ->
-            OCRFrameProcessorPlugin()
+    companion object {
+        init {
+            FrameProcessorPluginRegistry.addFrameProcessorPlugin("scanOCR") { options ->
+                OCRFrameProcessorPlugin()
+            }
         }
     }
 
