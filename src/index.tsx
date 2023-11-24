@@ -1,4 +1,4 @@
-import { VisionCameraProxy, Frame } from 'react-native-vision-camera';
+import { VisionCameraProxy, type Frame } from 'react-native-vision-camera';
 
 type BoundingFrame = {
   x: number;

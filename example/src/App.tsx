@@ -6,13 +6,13 @@ import {
   StyleSheet,
   View,
   Text,
-  LayoutChangeEvent,
+  type LayoutChangeEvent,
   PixelRatio,
   TouchableOpacity,
   Alert,
 } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { OCRFrame, scanOCR } from 'vision-camera-ocr';
+import { type OCRFrame, scanOCR } from 'vision-camera-ocr';
 import {
   useCameraDevice,
   useFrameProcessor,
