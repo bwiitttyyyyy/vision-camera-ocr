@@ -82,7 +82,7 @@ class OCRFrameProcessorPlugin(options: Map<String, Any>?): FrameProcessorPlugin(
         @SuppressLint("UnsafeOptInUsageError")
         val mediaImage: Image = frame.image ?: return null
 
-        val rotationDegrees = Orientation.fromUnionValue(frame.orientation)?.toDegrees() ?: Orientation.PORTRAIT.toDegrees()
+        val rotationDegrees = frame.orientation.toDegrees()
         val image = InputImage.fromMediaImage(mediaImage, rotationDegrees)
         val task: Task<Text> = recognizer.process(image)
         try {
