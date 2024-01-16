@@ -2062,9 +2062,9 @@
   integrity sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng==
 
 "@types/react@^18.2.29":
-  version "18.2.47"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.47.tgz#85074b27ab563df01fbc3f68dc64bf7050b0af40"
-  integrity sha512-xquNkkOirwyCgoClNk85BjP+aqnIS+ckAJ8i37gAbDs14jfW/J23f2GItAf33oiUPQnqNMALiFeoM9Y5mbjpVQ==
+  version "18.2.48"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.48.tgz#11df5664642d0bd879c1f58bc1d37205b064e8f1"
+  integrity sha512-qboRCl6Ie70DQQG9hhNREz81jqC1cs9EVNcjQ1AU+jH6NFfSAhVVbrrY/+nSF+Bsk4AOwm9Qa61InvMCyV+H3w==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -6853,10 +6853,10 @@ react-native-builder-bob@0.23.2:
     which "^2.0.2"
     yargs "^17.5.1"
 
-react-native-vision-camera@^3.7.0:
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/react-native-vision-camera/-/react-native-vision-camera-3.7.0.tgz#acec4c0491b06b02e84749a20fc112aedc75e16d"
-  integrity sha512-+QvoNXc6QPBVhJjI+uBIWOUOBuno9n+jGLDjgoqtwBkG9GBEsysTwB8ajZCo48H+MQkACmBsnNvObzzpjK6JeA==
+react-native-vision-camera@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-vision-camera/-/react-native-vision-camera-3.8.0.tgz#b248613fca16d835db6e204ca4e68ad39e792ed4"
+  integrity sha512-Ym3tIwPm8K3Wcm5OF70HlsilC9Ty6ZiT/7vij4nc6IsLWm5xRZVlJBLaquPLP0p7oQCR7t1sY7/QyRQGxZac4w==
 
 react-native-worklets-core@^0.2.4:
   version "0.2.4"

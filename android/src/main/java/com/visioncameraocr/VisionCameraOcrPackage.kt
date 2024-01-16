@@ -9,8 +9,8 @@ import com.mrousavy.camera.frameprocessor.FrameProcessorPluginRegistry
 class VisionCameraOcrPackage : ReactPackage {
     companion object {
         init {
-            FrameProcessorPluginRegistry.addFrameProcessorPlugin("scanOCR") { options ->
-                OCRFrameProcessorPlugin(options)
+            FrameProcessorPluginRegistry.addFrameProcessorPlugin("scanOCR") { proxy, options ->
+                OCRFrameProcessorPlugin(proxy, options)
             }
         }
     }
