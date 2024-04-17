@@ -25,7 +25,7 @@ export default function App() {
   const [pixelRatio, setPixelRatio] = React.useState<number>(1);
   const device = useCameraDevice('back');
 
-  const onOcrScanned = Worklets.createRunInJsFn(setOcr);
+  const onOcrScanned = Worklets.createRunOnJS(setOcr);
 
   const frameProcessor = useFrameProcessor((frame) => {
     'worklet';
