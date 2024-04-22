@@ -10,10 +10,10 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import com.mrousavy.camera.frameprocessor.Frame
-import com.mrousavy.camera.frameprocessor.FrameProcessorPlugin
-import com.mrousavy.camera.frameprocessor.VisionCameraProxy
-import com.mrousavy.camera.types.Orientation
+import com.mrousavy.camera.frameprocessors.Frame
+import com.mrousavy.camera.frameprocessors.FrameProcessorPlugin
+import com.mrousavy.camera.frameprocessors.VisionCameraProxy
+import com.mrousavy.camera.core.types.Orientation
 
 class OCRFrameProcessorPlugin(proxy: VisionCameraProxy, options: Map<String, Any>?): FrameProcessorPlugin() {
 
@@ -83,7 +83,7 @@ class OCRFrameProcessorPlugin(proxy: VisionCameraProxy, options: Map<String, Any
         @SuppressLint("UnsafeOptInUsageError")
         val mediaImage: Image = frame.image ?: return null
 
-        val rotationDegrees = frame.orientation.toDegrees()
+        val rotationDegrees = frame.orientation.toSurfaceRotation()
         val image = InputImage.fromMediaImage(mediaImage, rotationDegrees)
         val task: Task<Text> = recognizer.process(image)
         try {
