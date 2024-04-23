@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Point
 import android.graphics.Rect
 import android.media.Image
+import android.view.Surface
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.mlkit.vision.common.InputImage
@@ -14,6 +15,7 @@ import com.mrousavy.camera.frameprocessors.Frame
 import com.mrousavy.camera.frameprocessors.FrameProcessorPlugin
 import com.mrousavy.camera.frameprocessors.VisionCameraProxy
 import com.mrousavy.camera.core.types.Orientation
+import java.lang.IllegalArgumentException
 
 class OCRFrameProcessorPlugin(proxy: VisionCameraProxy, options: Map<String, Any>?): FrameProcessorPlugin() {
 
@@ -83,7 +85,13 @@ class OCRFrameProcessorPlugin(proxy: VisionCameraProxy, options: Map<String, Any
         @SuppressLint("UnsafeOptInUsageError")
         val mediaImage: Image = frame.image ?: return null
 
-        val rotationDegrees = frame.orientation.toSurfaceRotation()
+        val rotationDegrees = when (frame.orientation.toSurfaceRotation()) {
+            Surface.ROTATION_0 -> 0
+            Surface.ROTATION_90 -> 90
+            Surface.ROTATION_180 -> 180
+            Surface.ROTATION_270 -> 270
+            else -> throw IllegalArgumentException("Invalid surface rotation value")
+        }
         val image = InputImage.fromMediaImage(mediaImage, rotationDegrees)
         val task: Task<Text> = recognizer.process(image)
         try {
