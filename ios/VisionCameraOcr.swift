@@ -1,4 +1,4 @@
-import VisionCamera
+import Vision
 import AVFoundation
 import MLKitVision
 import MLKitTextRecognition
