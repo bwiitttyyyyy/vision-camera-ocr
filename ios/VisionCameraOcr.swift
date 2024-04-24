@@ -3,8 +3,8 @@ import AVFoundation
 import MLKitVision
 import MLKitTextRecognition
 
-@objc(OCRFrameProcessorPlugin)
-public class OCRFrameProcessorPlugin: FrameProcessorPlugin {
+@objc(VisionCameraOcr)
+public class VisionCameraOcr: FrameProcessorPlugin {
     public override init(proxy: VisionCameraProxyHolder, options: [AnyHashable : Any]! = [:]) {
       super.init(proxy: proxy, options: options)
     }
