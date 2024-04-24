@@ -2,7 +2,7 @@
 #import <VisionCamera/FrameProcessorPlugin.h>
 #import <VisionCamera/FrameProcessorPluginRegistry.h>
 
-#if __has_include("ezsqliterev/ezsqliterev-Swift.h")
+#if __has_include("VisionCameraOcr/VisionCameraOcr-Swift.h")
 #import "VisionCameraOcr/VisionCameraOcr-Swift.h"
 #else
 #import "VisionCameraOcr-Swift.h"
