@@ -5,6 +5,9 @@ import MLKitTextRecognition
 
 @objc(VisionCameraOcr)
 public class VisionCameraOcr: FrameProcessorPlugin {
+    public override init(proxy: VisionCameraProxyHolder, options: [AnyHashable : Any]! = [:]) {
+      super.init(proxy: proxy, options: options)
+    }
     
     private static var textRecognizer = TextRecognizer.textRecognizer()
     
