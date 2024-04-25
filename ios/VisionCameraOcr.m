@@ -1,7 +1,11 @@
+#if __has_include(<VisionCameraOcr/VisionCameraOcr-Swift.h>)
+
 #import <Foundation/Foundation.h>
 #import <VisionCamera/FrameProcessorPlugin.h>
 #import <VisionCamera/FrameProcessorPluginRegistry.h>
 
 #import "VisionCameraOcr-Swift.h"
 
-VISION_EXPORT_SWIFT_FRAME_PROCESSOR(scanOCR, VisionCameraOcr)
+VISION_EXPORT_SWIFT_FRAME_PROCESSOR(VisionCameraOcr, scanOCR)
+
+#endif
