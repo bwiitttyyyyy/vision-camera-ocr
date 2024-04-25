@@ -168,7 +168,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_MODULE_NAME = VisionCameraOcr;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "VisionCameraOcr-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -210,7 +212,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_MODULE_NAME = VisionCameraOcr;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "VisionCameraOcr-Bridging-Header.h";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
